@@ -1,0 +1,35 @@
+github:
+  user: "Himik"
+  token: "$Token"
+  repo: "github/Bootcamp-Project"
+  webhookSecret: "$Web"
+
+serviceAccount:
+  create: true
+  name: "atlantisAccount"
+
+atlantis:
+  repoConfig: |
+    repos:
+      - id: github/Bootcamp-project
+        apply_requirements: [approved, mergeable]
+        workflow: default
+
+service:
+  type: ClusterIP
+  port: 80
+
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  hosts:
+    - host: "https://026c-17-111-53-20.ngrok-free.app/"
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: "atlantis-tls"
+      hosts:
+        - "https://026c-17-111-53-20.ngrok-free.app/"
